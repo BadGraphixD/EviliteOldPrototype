@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3855347865677135841
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3855347865677135840}
+  - component: {fileID: 3855347865677135843}
+  m_Layer: 0
+  m_Name: AssetManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3855347865677135840
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3855347865677135841}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3855347865677135843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3855347865677135841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe688ded65eef084dadee3d0ccf4b666, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityTypes:
+  - name: frog
+    prefab: {fileID: 8784651304112093706, guid: f8d96aea0b59fb04fadfb2a80bbc29c2, type: 3}
+  tileTypes:
+  - tileBase: {fileID: 11400000, guid: 7e99d8f6e6ee3b34eb6ca65da16f89c9, type: 2}
+  gameSlotUIPrefab: {fileID: 4212929893878213894, guid: ae516c2b4cb7e7b4ab2cec93bda0c354, type: 3}
+  overworldPrefab: {fileID: 0}
+  catacombsPrefab: {fileID: 0}
+  templePrefab: {fileID: 0}

@@ -1,0 +1,5 @@
+name=Other Game Slot
+progress=33.5
+level=0
+entities={frog={{health=42,age=69,name=Overworld}},spider={}}
+mapData={minx=-1,miny=-1,maxx=1,maxy=1,tiles={-1,0,-1,0,0,0,-1,0,-1}}
