@@ -16,8 +16,4 @@ public class AssetManager : MonoBehaviour {
     public TileType[] tileTypes;
     public GameObject gameSlotUIPrefab;
 
-    public GameObject overworldPrefab;
-    public GameObject catacombsPrefab;
-    public GameObject templePrefab;
-
 }

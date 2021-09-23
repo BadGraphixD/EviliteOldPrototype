@@ -48,7 +48,5 @@ MonoBehaviour:
     prefab: {fileID: 8784651304112093706, guid: f8d96aea0b59fb04fadfb2a80bbc29c2, type: 3}
   tileTypes:
   - tileBase: {fileID: 11400000, guid: 7e99d8f6e6ee3b34eb6ca65da16f89c9, type: 2}
+    material: {fileID: 11400000, guid: 3f1791eff0deb3b4a84d9dfa758e2c96, type: 2}
   gameSlotUIPrefab: {fileID: 4212929893878213894, guid: ae516c2b4cb7e7b4ab2cec93bda0c354, type: 3}
-  overworldPrefab: {fileID: 0}
-  catacombsPrefab: {fileID: 0}
-  templePrefab: {fileID: 0}

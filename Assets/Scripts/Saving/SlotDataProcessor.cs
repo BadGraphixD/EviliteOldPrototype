@@ -60,18 +60,12 @@ public class SlotDataProcessor {
             return;
         }
 
-        Debug.Log(width);
-        Debug.Log(height);
-
         int tilePos = 0;
         foreach (String tileIndex in tileIndices) {
 
             int tilePosX = tilePos % width;
             int tilePosY = tilePos / height;
             tilePos++;
-
-            Debug.Log(tilePosX);
-            Debug.Log(tilePosY);
 
             int tileIdx = int.Parse(tileIndex);
 
@@ -92,8 +86,8 @@ public class SlotDataProcessor {
 
         int minx = GameManager.Instance.tilemap.cellBounds.min.x;
         int miny = GameManager.Instance.tilemap.cellBounds.min.y;
-        int maxx = GameManager.Instance.tilemap.cellBounds.max.x;
-        int maxy = GameManager.Instance.tilemap.cellBounds.max.y;
+        int maxx = GameManager.Instance.tilemap.cellBounds.max.x - 1;
+        int maxy = GameManager.Instance.tilemap.cellBounds.max.y - 1;
 
         mapData.AddEntry("minx=" + minx);
         mapData.AddEntry("miny=" + miny);
@@ -102,8 +96,8 @@ public class SlotDataProcessor {
 
         DataEntryList tileIndices = new DataEntryList();
 
-        for(int x = minx; x < maxx; x++){
-            for(int y = miny; y < maxy; y++){
+        for(int x = minx; x <= maxx; x++){
+            for(int y = miny; y <= maxy; y++){
                 TileBase tileBase = GameManager.Instance.tilemap.GetTile(new Vector3Int(x, y, 0));
 
                 int tileIdx = -1;
