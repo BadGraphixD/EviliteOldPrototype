@@ -1,3 +1,4 @@
+using UnityEngine;
 using System;
 using System.Collections.Generic;
 
@@ -15,6 +16,11 @@ public class SerializationUtils {
     }
 
     public static String[] UnpackEntryData(String data) {
+
+        if (emptyData(data) || invalidData(data)) {
+            return null;
+        }
+
         int bracketsLayer = 0;
         List<String> entries = new List<String>();
         entries.Add("");
@@ -40,6 +46,14 @@ public class SerializationUtils {
 
     public static String RemoveBrackets(String data) {
         return data.Substring(1, data.Length - 2);
+    }
+
+    private static bool emptyData(String data) {
+        return data.Equals("{}");
+    }
+
+    private static bool invalidData(String data) {
+        return data.Length <= 1 || data[0] != '{' || data[data.Length - 1] != '}';
     }
 }
 

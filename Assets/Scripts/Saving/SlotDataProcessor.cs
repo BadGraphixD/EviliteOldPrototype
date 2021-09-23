@@ -8,8 +8,16 @@ public class SlotDataProcessor {
     public static void DeserializeAndCreateEntities(SlotData slotData) {
         String[] entities = SerializationUtils.UnpackEntryData(slotData.entityData);
 
+        if (entities == null) {
+            return;
+        }
+
         foreach (EntityType entityType in AssetManager.Instance.entityTypes) {
             String[] entityInstances = SerializationUtils.UnpackEntryData(SerializationUtils.GetEntryValue(entities, entityType.name));
+            
+            if (entityInstances == null) {
+                continue;
+            }
 
             foreach (String entityInstanceData in entityInstances) {
                 EntityManager.Instance.CreateEntity(entityType, entityInstanceData);
@@ -40,6 +48,13 @@ public class SlotDataProcessor {
 
     public static void DeserializeAndCreateMap(SlotData slotData) {
         String[] mapData = SerializationUtils.UnpackEntryData(slotData.mapData);
+        
+        if (mapData == null) {
+#if UNITY_EDITOR
+            Debug.Log($"Error: Invalid map data: \"{slotData.mapData}\"");
+#endif
+            return;
+        }
 
         int minx = int.Parse(SerializationUtils.GetEntryValue(mapData, "minx"));
         int miny = int.Parse(SerializationUtils.GetEntryValue(mapData, "miny"));
@@ -63,8 +78,8 @@ public class SlotDataProcessor {
         int tilePos = 0;
         foreach (String tileIndex in tileIndices) {
 
-            int tilePosX = tilePos % width;
-            int tilePosY = tilePos / height;
+            int tilePosY = tilePos % height;
+            int tilePosX = tilePos / height;
             tilePos++;
 
             int tileIdx = int.Parse(tileIndex);
