@@ -65,7 +65,12 @@ public class SlotDataProcessor {
         int height = (maxy - miny) + 1;
 
         String tileData = SerializationUtils.GetEntryValue(mapData, "tiles");
-        String[] tileIndices = SerializationUtils.UnpackEntryData(tileData);
+        String[] tileIndicesAsStr = SerializationUtils.UnpackEntryData(tileData);
+
+        int[] tileIndices = new int[tileIndicesAsStr.Length];
+        for (int i = 0; i < tileIndicesAsStr.Length; i++) {
+            tileIndices[i] = int.Parse(tileIndicesAsStr[i]);
+        }
 
         if (GameManager.Instance.tilemap != null) {
             GameManager.Instance.tilemap.ClearAllTiles();
@@ -76,13 +81,11 @@ public class SlotDataProcessor {
         }
 
         int tilePos = 0;
-        foreach (String tileIndex in tileIndices) {
+        foreach (int tileIdx in tileIndices) {
 
             int tilePosY = tilePos % height;
             int tilePosX = tilePos / height;
             tilePos++;
-
-            int tileIdx = int.Parse(tileIndex);
 
             if (tileIdx < 0 || tileIdx >= AssetManager.Instance.tileTypes.Length) {
                 continue;
@@ -91,6 +94,8 @@ public class SlotDataProcessor {
             TileBase tileBase = AssetManager.Instance.tileTypes[tileIdx].tileBase;
             GameManager.Instance.tilemap.SetTile(new Vector3Int(minx + tilePosX, miny + tilePosY, 0), tileBase);
         }
+
+        DecorationGenerator.GenerateDecorations(minx, maxx, miny, maxy, tileIndices);
     }
 
     public static String SerializeMap() {

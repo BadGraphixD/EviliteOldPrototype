@@ -14,7 +14,7 @@ public class EntityManager : MonoBehaviour {
     }
 
     public Entity CreateEntity(EntityType type, String data) {
-        Entity entity = UnityEngine.Object.Instantiate(type.prefab).GetComponent<Entity>();
+        Entity entity = Instantiate(type.prefab).GetComponent<Entity>();
 
         if (entity == null) {
             return null;

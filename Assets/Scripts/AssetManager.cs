@@ -20,6 +20,7 @@ public class AssetManager : MonoBehaviour {
 
     public EntityType[] entityTypes;
     public TileType[] tileTypes;
+    public DecorationObject[] decorationObjects;
     public GameObject gameSlotUIPrefab;
 
 

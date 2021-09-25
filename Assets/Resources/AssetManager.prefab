@@ -235,4 +235,15 @@ MonoBehaviour:
     material: {fileID: 11400000, guid: 3f1791eff0deb3b4a84d9dfa758e2c96, type: 2}
   - tileBase: {fileID: 11400000, guid: e328b9b8f1543914fbfed76df251e14e, type: 2}
     material: {fileID: 11400000, guid: 3f1791eff0deb3b4a84d9dfa758e2c96, type: 2}
+  decorationObjects:
+  - prefabs:
+    - {fileID: 5297676238837411757, guid: 07d7c60187875bb4db76ade9f0b03e11, type: 3}
+    - {fileID: 5297676238837411757, guid: 5050bd00ac8b7ae4089ab6dd0390aa86, type: 3}
+    material: {fileID: 11400000, guid: 3f1791eff0deb3b4a84d9dfa758e2c96, type: 2}
+    placementRules:
+      direction: 0
+      foundationRadius: 0.5
+      height: 1
+      neighbourRadius: 0.5
+      frequency: 0.5
   gameSlotUIPrefab: {fileID: 4212929893878213894, guid: ae516c2b4cb7e7b4ab2cec93bda0c354, type: 3}
