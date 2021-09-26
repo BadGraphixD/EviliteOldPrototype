@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aea42de0463e5384cb44d2934b2d4124, type: 3}
   m_Name: Grass
   m_EditorClassIdentifier: 
+  isDestructable: 0

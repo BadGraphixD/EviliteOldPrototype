@@ -47,55 +47,9 @@ public class SlotDataProcessor {
     }
 
     public static void DeserializeAndCreateMap(SlotData slotData) {
-        String[] mapData = SerializationUtils.UnpackEntryData(slotData.mapData);
-        
-        if (mapData == null) {
-#if UNITY_EDITOR
-            Debug.Log($"Error: Invalid map data: \"{slotData.mapData}\"");
-#endif
-            return;
-        }
-
-        int minx = int.Parse(SerializationUtils.GetEntryValue(mapData, "minx"));
-        int miny = int.Parse(SerializationUtils.GetEntryValue(mapData, "miny"));
-        int maxx = int.Parse(SerializationUtils.GetEntryValue(mapData, "maxx"));
-        int maxy = int.Parse(SerializationUtils.GetEntryValue(mapData, "maxy"));
-
-        int width  = (maxx - minx) + 1;
-        int height = (maxy - miny) + 1;
-
-        String tileData = SerializationUtils.GetEntryValue(mapData, "tiles");
-        String[] tileIndicesAsStr = SerializationUtils.UnpackEntryData(tileData);
-
-        int[] tileIndices = new int[tileIndicesAsStr.Length];
-        for (int i = 0; i < tileIndicesAsStr.Length; i++) {
-            tileIndices[i] = int.Parse(tileIndicesAsStr[i]);
-        }
-
-        if (GameManager.Instance.tilemap != null) {
-            GameManager.Instance.tilemap.ClearAllTiles();
-        }
-
-        if (width <= 0 || height <= 0) {
-            return;
-        }
-
-        int tilePos = 0;
-        foreach (int tileIdx in tileIndices) {
-
-            int tilePosY = tilePos % height;
-            int tilePosX = tilePos / height;
-            tilePos++;
-
-            if (tileIdx < 0 || tileIdx >= AssetManager.Instance.tileTypes.Length) {
-                continue;
-            }
-
-            TileBase tileBase = AssetManager.Instance.tileTypes[tileIdx].tileBase;
-            GameManager.Instance.tilemap.SetTile(new Vector3Int(minx + tilePosX, miny + tilePosY, 0), tileBase);
-        }
-
-        DecorationGenerator.GenerateDecorations(minx, maxx, miny, maxy, tileIndices);
+        TileIndexMap tileIndexMap = new TileIndexMap(slotData.mapData);
+        tileIndexMap.FillTilemapWithTiles();
+        DecorationGenerator.GenerateDecorations(tileIndexMap);
     }
 
     public static String SerializeMap() {

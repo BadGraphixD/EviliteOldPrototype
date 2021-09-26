@@ -1869,7 +1869,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 759287882}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: SaveGame
+        m_MethodName: SaveSlot
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

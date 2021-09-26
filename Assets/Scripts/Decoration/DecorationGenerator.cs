@@ -6,47 +6,32 @@ public class DecorationGenerator {
 
     private class ExistingObject {
         public Vector2 pos;
-        public float radius;
 
-        public ExistingObject(Vector2 pos, float radius) {
+        public ExistingObject(Vector2 pos) {
             this.pos = pos;
-            this.radius = radius;
         }
     }
 
-    public static void GenerateDecorations(int minx, int maxx, int miny, int maxy, int[] tileIndices) {
+    public static void GenerateDecorations(TileIndexMap tileIndexMap) {
 
         foreach (DecorationObject decorationObject in AssetManager.Instance.decorationObjects) {
             List<ExistingObject> existingObjects = new List<ExistingObject>();
 
-            for (int x = 0; x <= maxx - minx; x++) {
-                for (int y = 0; y <= maxy - miny; y++) {
+            for (int x = 0; x < tileIndexMap.Width; x++) {
+                for (int y = 0; y < tileIndexMap.Height; y++) {
 
-                    Vector2Int generatingIntervalls = new Vector2Int(1, 1);
-
-                    switch (decorationObject.placementRules.direction) {
-                        case DecorationObject.PlacementRules.Direction.TOP:
-                        case DecorationObject.PlacementRules.Direction.BOTTOM:
-                            generatingIntervalls.x = 4;
-                            break;
-                        case DecorationObject.PlacementRules.Direction.SIDE:
-                            generatingIntervalls.y = 4;
-                            break;
-                    }
+                    Vector2Int generatingIntervalls = calcGenerationIntervall(decorationObject.placementRules.direction);
 
                     for (int i = 0; i < generatingIntervalls.x; i++) {
                         for (int j = 0; j < generatingIntervalls.y; j++) {
 
-                            Vector2 mapSpacePos = new Vector2(
-                                x + i / (float)generatingIntervalls.x,
-                                y + j / (float)generatingIntervalls.y
-                            );
-                            Vector2 worldSpacePos = mapSpacePos + new Vector2(minx, miny);
+                            Vector2 mapSpacePos = calcMapSpacePos(x, y, i, j, generatingIntervalls);
+                            Vector2 worldSpacePos = tileIndexMap.Position + mapSpacePos;
                             
-                            if (canGenerate(decorationObject, existingObjects, mapSpacePos, tileIndices, (maxx - minx) + 1, (maxy - miny) + 1)) {
+                            if (canGenerate(decorationObject, existingObjects, mapSpacePos, tileIndexMap)) {
 
                                 UnityEngine.Object.Instantiate(Utils.selectRandom(decorationObject.prefabs), worldSpacePos, Quaternion.identity);
-                                existingObjects.Add(new ExistingObject(mapSpacePos, decorationObject.placementRules.neighbourRadius));
+                                existingObjects.Add(new ExistingObject(mapSpacePos));
                             }
                         }
                     }
@@ -55,67 +40,81 @@ public class DecorationGenerator {
         }
     }
 
-    private static bool canGenerate(DecorationObject decorationObject, List<ExistingObject> existingObjects, Vector2 pos, int[] tileIndices, int mapWidth, int mapHeight) {
+    private static bool canGenerate(DecorationObject decorationObject, List<ExistingObject> existingObjects, Vector2 pos, TileIndexMap tileIndexMap) {
 
         if (UnityEngine.Random.value > decorationObject.placementRules.frequency) {
             return false;
         }
-        
-        float foundationMinPos = pos.x - decorationObject.placementRules.foundationRadius;
-        float foundationMaxPos = pos.x + decorationObject.placementRules.foundationRadius;
 
-        float airMinPos = pos.y;
-        float airMaxPos = pos.y + decorationObject.placementRules.height;
+        Range foundationRange = new Range(
+            pos.x - decorationObject.placementRules.foundationRadius,
+            pos.x + decorationObject.placementRules.foundationRadius
+        );
+        Range airRange = new Range(
+            pos.y,
+            pos.y + decorationObject.placementRules.height
+        );
 
-        for (int f = Utils.floor(foundationMinPos - 0.125f); f <= Utils.floor(foundationMaxPos); f++) {
-            if (!compareTileMaterial(getTileIdx(new Vector2(f, pos.y - 1f), tileIndices, mapWidth, mapHeight), decorationObject.material)) {
+        if (!hasFoundation(foundationRange, pos, tileIndexMap, decorationObject) ||
+            !hasAirSpace(foundationRange, airRange, tileIndexMap) ||
+            !hasNighbourSpace(existingObjects, decorationObject, pos)) {
+            return false;
+        }
+
+
+        return true;
+    }
+
+    private static bool hasFoundation(Range foundationRange, Vector2 pos, TileIndexMap tileIndexMap, DecorationObject decorationObject) {
+        for (int f = Utils.floor(foundationRange.min - 0.125f); f <= Utils.floor(foundationRange.max); f++) {
+            if (!tileIndexMap.CompareTileMaterial(new Vector2(f, pos.y - 1f), decorationObject.material)) {
                 return false;
             }
         }
-        
-        for (int f = Utils.floor(foundationMinPos); f <= Utils.floor(foundationMaxPos - 0.125f); f++) {
-            for (int a = Utils.floor(airMinPos); a <= Utils.floor(airMaxPos); a++) {
-                if (!tileIsEmpty(getTileIdx(new Vector2(f, a), tileIndices, mapWidth, mapHeight))) {
+        return true;
+    }
+
+    private static bool hasAirSpace(Range foundationRange, Range airRange, TileIndexMap tileIndexMap) {
+        for (int f = Utils.floor(foundationRange.min); f <= Utils.floor(foundationRange.max - 0.125f); f++) {
+            for (int a = Utils.floor(airRange.min); a <= Utils.floor(airRange.max); a++) {
+                if (!tileIndexMap.TileIsEmptyOrDestructible(new Vector2(f, a))) {
                     return false;
                 }
             }
         }
+        return true;
+    }
 
+    private static bool hasNighbourSpace(List<ExistingObject> existingObjects, DecorationObject decorationObject, Vector2 pos) {
         foreach (ExistingObject existingObject in existingObjects) {
-            float minDist = existingObject.radius + decorationObject.placementRules.neighbourRadius;
-
-            if ((pos - existingObject.pos).magnitude < minDist) {
+            if ((pos - existingObject.pos).magnitude < decorationObject.placementRules.neighbourRadius * 2) {
                 return false;
             }
         }
-
         return true;
     }
 
-    private static int getTileIdx(Vector2 posf, int[] tileIndices, int mapWidth, int mapHeight) {
-        Vector2Int pos = new Vector2Int(Utils.floor(posf.x), Utils.floor(posf.y));
+    private static Vector2Int calcGenerationIntervall(DecorationObject.PlacementRules.Direction direction) {
+        Vector2Int intervalls = new Vector2Int(1, 1);
 
-        if (pos.x < 0 || pos.x >= mapWidth || pos.y < 0 || pos.y >= mapHeight) {
-            return -1;
+        switch (direction) {
+            case DecorationObject.PlacementRules.Direction.TOP:
+            case DecorationObject.PlacementRules.Direction.BOTTOM:
+                intervalls.x = 4;
+                break;
+            case DecorationObject.PlacementRules.Direction.SIDE:
+                intervalls.y = 4;
+                break;
         }
 
-        return tileIndices[pos.x * mapHeight + pos.y];
+        return intervalls;
     }
 
-    private static bool tileIsEmpty(int tileIdx) {
-        return tileIdx == -1;
-    }
-
-    private static bool compareTileMaterial(int tileIdx, TileMaterial material) {
-        if (tileIdx == -1 || tileIdx >= AssetManager.Instance.tileTypes.Length) {
-            return false;
-        }
-        
-        if (AssetManager.Instance.tileTypes[tileIdx].material != material) {
-            return false;
-        }
-
-        return true;
+    private static Vector2 calcMapSpacePos(int x, int y, int i, int j, Vector2Int intervalls) {
+        return new Vector2(
+            x + i / (float)intervalls.x,
+            y + j / (float)intervalls.y
+        );
     }
 
 }
