@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour {
     }
 
     public Tilemap tilemap;
+    public Transform decorationParent;
+
     private SlotData currentSlot;
 
     public void PlaySlot(SlotData slotData) {

@@ -30,7 +30,7 @@ public class DecorationGenerator {
                             
                             if (canGenerate(decorationObject, existingObjects, mapSpacePos, tileIndexMap)) {
 
-                                UnityEngine.Object.Instantiate(Utils.selectRandom(decorationObject.prefabs), worldSpacePos, Quaternion.identity);
+                                UnityEngine.Object.Instantiate(Utils.selectRandom(decorationObject.prefabs), worldSpacePos, Quaternion.identity, GameManager.Instance.decorationParent);
                                 existingObjects.Add(new ExistingObject(mapSpacePos));
                             }
                         }

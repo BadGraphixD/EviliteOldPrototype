@@ -246,4 +246,57 @@ MonoBehaviour:
       height: 1
       neighbourRadius: 0.5
       frequency: 0.5
+  - prefabs:
+    - {fileID: 5297676238837411757, guid: 131e01bc3e573af4096b3ad11a241fed, type: 3}
+    material: {fileID: 11400000, guid: 3f1791eff0deb3b4a84d9dfa758e2c96, type: 2}
+    placementRules:
+      direction: 0
+      foundationRadius: 2
+      height: 4
+      neighbourRadius: 5
+      frequency: 0.1
+  - prefabs:
+    - {fileID: 5297676238837411757, guid: a1cb517351d4fe94aa0e1f394ba9f08a, type: 3}
+    - {fileID: 5297676238837411757, guid: 5d85727e2acaadb4598e74a097b68e7a, type: 3}
+    - {fileID: 5297676238837411757, guid: 646c7475082d8124883379556eece9d2, type: 3}
+    material: {fileID: 11400000, guid: 3f1791eff0deb3b4a84d9dfa758e2c96, type: 2}
+    placementRules:
+      direction: 0
+      foundationRadius: 0.5
+      height: 2
+      neighbourRadius: 5
+      frequency: 0.1
+  - prefabs:
+    - {fileID: 5297676238837411757, guid: 0fc2234b2d81f0047869a731956624fc, type: 3}
+    - {fileID: 5297676238837411757, guid: d1d81d69bd6d14343a93d149e6c51ba0, type: 3}
+    - {fileID: 5297676238837411757, guid: 315e2c030ea73a44fbcca5cd397e1b7c, type: 3}
+    - {fileID: 5297676238837411757, guid: 856b8731aadf5934aa1e3cf6906efcc4, type: 3}
+    material: {fileID: 11400000, guid: 3f1791eff0deb3b4a84d9dfa758e2c96, type: 2}
+    placementRules:
+      direction: 0
+      foundationRadius: 2
+      height: 2
+      neighbourRadius: 5
+      frequency: 0.1
+  - prefabs:
+    - {fileID: 5297676238837411757, guid: d22e3e1a7988340468b50c8069b4633f, type: 3}
+    - {fileID: 5297676238837411757, guid: 205f69bfa92427645a9209e6b78bef6b, type: 3}
+    - {fileID: 5297676238837411757, guid: 337ce3552bb31a346b3b16ca647d4a28, type: 3}
+    - {fileID: 5297676238837411757, guid: c1495b6f93dc8d8489ed6bbf3c07c9b8, type: 3}
+    material: {fileID: 11400000, guid: 3f1791eff0deb3b4a84d9dfa758e2c96, type: 2}
+    placementRules:
+      direction: 0
+      foundationRadius: 0.5
+      height: 1
+      neighbourRadius: 3
+      frequency: 0.2
+  - prefabs:
+    - {fileID: 5297676238837411757, guid: 4b72ebb9503816a498272cdbc5d0907e, type: 3}
+    material: {fileID: 11400000, guid: 3f1791eff0deb3b4a84d9dfa758e2c96, type: 2}
+    placementRules:
+      direction: 0
+      foundationRadius: 2
+      height: 2
+      neighbourRadius: 5
+      frequency: 0.1
   gameSlotUIPrefab: {fileID: 4212929893878213894, guid: ae516c2b4cb7e7b4ab2cec93bda0c354, type: 3}
