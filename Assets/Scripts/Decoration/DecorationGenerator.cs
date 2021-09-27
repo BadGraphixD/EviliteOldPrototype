@@ -20,12 +20,12 @@ public class DecorationGenerator {
             for (int x = 0; x < tileIndexMap.Width; x++) {
                 for (int y = 0; y < tileIndexMap.Height; y++) {
 
-                    Vector2Int generatingIntervalls = calcGenerationIntervall(decorationObject.placementRules.direction);
+                    Vector2Int generationAttempts = calcGenerationAttempts(decorationObject.placementRules.direction);
 
-                    for (int i = 0; i < generatingIntervalls.x; i++) {
-                        for (int j = 0; j < generatingIntervalls.y; j++) {
+                    for (int i = 0; i < generationAttempts.x; i++) {
+                        for (int j = 0; j < generationAttempts.y; j++) {
 
-                            Vector2 mapSpacePos = calcMapSpacePos(x, y, i, j, generatingIntervalls);
+                            Vector2 mapSpacePos = calcMapSpacePos(x, y, i, j, generationAttempts);
                             Vector2 worldSpacePos = tileIndexMap.Position + mapSpacePos;
                             
                             if (canGenerate(decorationObject, existingObjects, mapSpacePos, tileIndexMap)) {
@@ -94,26 +94,26 @@ public class DecorationGenerator {
         return true;
     }
 
-    private static Vector2Int calcGenerationIntervall(DecorationObject.PlacementRules.Direction direction) {
-        Vector2Int intervalls = new Vector2Int(1, 1);
+    private static Vector2Int calcGenerationAttempts(DecorationObject.PlacementRules.Direction direction) {
+        Vector2Int attempts = new Vector2Int(1, 1);
 
         switch (direction) {
             case DecorationObject.PlacementRules.Direction.TOP:
             case DecorationObject.PlacementRules.Direction.BOTTOM:
-                intervalls.x = 4;
+                attempts.x = 4;
                 break;
             case DecorationObject.PlacementRules.Direction.SIDE:
-                intervalls.y = 4;
+                attempts.y = 4;
                 break;
         }
 
-        return intervalls;
+        return attempts;
     }
 
-    private static Vector2 calcMapSpacePos(int x, int y, int i, int j, Vector2Int intervalls) {
+    private static Vector2 calcMapSpacePos(int x, int y, int i, int j, Vector2Int attempts) {
         return new Vector2(
-            x + i / (float)intervalls.x,
-            y + j / (float)intervalls.y
+            x + i / (float)attempts.x,
+            y + j / (float)attempts.y
         );
     }
 

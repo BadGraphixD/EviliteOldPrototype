@@ -7,6 +7,7 @@ public class SlotData {
     
     public String name;
     public float progress;
+    public int seed;
     public GameManager.Level level;
     public String entityData;
     public String mapData;
@@ -16,6 +17,7 @@ public class SlotData {
 
         str += "name=" + slotData.name + "\n";
         str += "progress=" + slotData.progress.ToString() + "\n";
+        str += "seed=" + slotData.seed.ToString() + "\n";
         str += "level=" + ((int)slotData.level).ToString() + "\n";
         str += "entities=" + slotData.entityData + "\n";
         str += "mapData=" + slotData.mapData;
@@ -29,6 +31,7 @@ public class SlotData {
 
         slotData.name = SerializationUtils.GetEntryValue(entries, "name");
         slotData.progress = float.Parse(SerializationUtils.GetEntryValue(entries, "progress"));
+        slotData.seed = int.Parse(SerializationUtils.GetEntryValue(entries, "seed"));
         slotData.level = (GameManager.Level)int.Parse(SerializationUtils.GetEntryValue(entries, "level"));
         slotData.entityData = SerializationUtils.GetEntryValue(entries, "entities");
         slotData.mapData = SerializationUtils.GetEntryValue(entries, "mapData");

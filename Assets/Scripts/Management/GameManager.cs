@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour {
 
     public void PlaySlot(SlotData slotData) {
         currentSlot = slotData;
-        UnityEngine.Random.seed = 42; 
+        UnityEngine.Random.seed = slotData.seed; 
         SlotDataProcessor.DeserializeAndCreateEntities(slotData);
         SlotDataProcessor.DeserializeAndCreateMap(slotData);
     }
