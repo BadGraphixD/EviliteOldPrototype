@@ -4,7 +4,7 @@ using System;
 [Serializable]
 public class Timer {
     public float time;
-    public float cooldown;
+    [HideInInspector] public float cooldown;
     
     public delegate void Callback();
     public Callback callback;

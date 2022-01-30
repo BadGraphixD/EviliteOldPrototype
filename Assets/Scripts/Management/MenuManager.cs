@@ -15,12 +15,12 @@ public class MenuManager : MonoBehaviour {
         }
     }
 
-    [SerializeField] private GameObject mainMenuCanvas;
-    [SerializeField] private GameObject newGameCanvas;
-    [SerializeField] private GameObject loadGameCanvas;
-    [SerializeField] private GameObject pauseCanvas;
-    [SerializeField] private GameObject optionsCanvas;
-    [SerializeField] private GameObject aboutCanvas;
+    [SerializeField] private CanvasGroup allMenus;
+    [SerializeField] private CanvasGroup mainMenu;
+    [SerializeField] private CanvasGroup newGame;
+    [SerializeField] private CanvasGroup loadGame;
+    [SerializeField] private CanvasGroup pause;
+    [SerializeField] private CanvasGroup options;
 
     [SerializeField] private TMP_InputField slotNameInput;
     [SerializeField] private Button createNewSlotButton;
@@ -32,62 +32,73 @@ public class MenuManager : MonoBehaviour {
     public SlotData[] loadedSlots;
 
     private void Update() {
-        name = slotNameInput.text;
-        createNewSlotButton.interactable = name != null || name != "" || name.Length > 0;
+        slotName = slotNameInput.text;
+        createNewSlotButton.interactable = slotName != null || slotName != "" || slotName.Length > 0;
+    }
+
+    public void SetAllMenusActive(bool active) {
+        SetActive(allMenus, active);
+    }
+
+    public void MainMenu() {
+        setAllInactive();
+        SetActive(mainMenu, true);
     }
 
     public void NewGame() {
         setAllInactive();
-        newGameCanvas.SetActive(true);
+        SetActive(newGame, true);
     }
 
     public void LoadGame() {
         setAllInactive();
-        loadGameCanvas.SetActive(true);
+        SetActive(loadGame, true);
+        
+        foreach (Transform gameSlotUI in loadedSlotsView) {
+            GameObject.Destroy(gameSlotUI.gameObject);
+        }
 
         loadedSlots = SlotFileManager.LoadAllSlotDataFiles();
 
         int idx = 0;
         foreach (SlotData slotData in loadedSlots) {
-            GameObject gameSlotUI = Instantiate(AssetManager.Instance.gameSlotUIPrefab);
-            gameSlotUI.transform.parent = loadedSlotsView;
-            gameSlotUI.GetComponent<GameSlotUI>().SetProperties(slotData.name, slotData.progress, idx);
+            GameObject gameSlotUI = Instantiate(AssetManager.Instance.gameSlotUIPrefab, Vector3.zero, Quaternion.identity, loadedSlotsView);
+            gameSlotUI.GetComponent<GameSlotUI>().SetProperties(slotData.name, idx);
             idx++;
         }
     }
 
-    public void Options() {
+    public void Pause() {
         setAllInactive();
-        optionsCanvas.SetActive(true);
+        SetActive(pause, true);
     }
 
-    public void About() {
+    public void Options() {
         setAllInactive();
-        aboutCanvas.SetActive(true);
+        SetActive(options, true);
     }
 
     public void Exit() {
         Application.Quit();
     }
 
-    public void MainMenu() {
-        setAllInactive();
-        mainMenuCanvas.SetActive(true);
-    }
-
     public void CreateNewSlot() {
-        GameManager.Instance.PlaySlot(SlotFileManager.LoadNewLevelSlotData(
-            GameManager.Level.OVERWORLD, name, 0.0f
-        ));
+        GameManager.Instance.PlaySlot(SlotFileManager.LoadNewLevelSlotData(slotName, 0.0f));
         GameManager.Instance.SaveSlot();
     }
 
     private void setAllInactive() {
-        mainMenuCanvas.SetActive(false);
-        newGameCanvas.SetActive(false);
-        loadGameCanvas.SetActive(false);
-        optionsCanvas.SetActive(false);
-        aboutCanvas.SetActive(false);
+        SetActive(mainMenu, false);
+        SetActive(newGame, false);
+        SetActive(loadGame, false);
+        SetActive(pause, false);
+        SetActive(options, false);
+    }
+
+    private void SetActive(CanvasGroup group, bool active) {
+        group.alpha = active ? 1f : 0f;
+        group.interactable = active;
+        group.blocksRaycasts = active;
     }
 
 }

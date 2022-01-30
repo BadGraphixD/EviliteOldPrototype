@@ -22,7 +22,9 @@ public class AssetManager : MonoBehaviour {
     public TileType[] tileTypes;
     public DecorationObject[] decorationObjects;
     public GameObject gameSlotUIPrefab;
+    public LayerMask groundMask;
 
+    public float globalGravity;
 
     // TODO: remove temporary method (or migrate to editor script)
     public void AddTileTypes() {

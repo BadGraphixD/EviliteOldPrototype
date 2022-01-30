@@ -8,20 +8,15 @@ public class SlotDataProcessor {
     public static void DeserializeAndCreateEntities(SlotData slotData) {
         String[] entities = SerializationUtils.UnpackEntryData(slotData.entityData);
 
-        if (entities == null) {
-            return;
-        }
+        foreach (String entity in entities) {
+            String[] entityProperties = SerializationUtils.UnpackEntryData(entity);
 
-        foreach (EntityType entityType in AssetManager.Instance.entityTypes) {
-            String[] entityInstances = SerializationUtils.UnpackEntryData(SerializationUtils.GetEntryValue(entities, entityType.name));
-            
-            if (entityInstances == null) {
-                continue;
-            }
+            String typeStr = SerializationUtils.GetEntryValue(entityProperties, "type");
+            String guidStr = SerializationUtils.GetEntryValue(entityProperties, "guid");
+            String entitySpecificData = SerializationUtils.GetEntryValue(entityProperties, "data");
 
-            foreach (String entityInstanceData in entityInstances) {
-                EntityManager.Instance.CreateEntity(entityType, entityInstanceData);
-            }
+            EntityType type = Array.Find(AssetManager.Instance.entityTypes, type => type.name.Equals(typeStr));
+            EntityManager.Instance.CreateEntity(type, Guid.Parse(guidStr), entitySpecificData);
         }
     }
 

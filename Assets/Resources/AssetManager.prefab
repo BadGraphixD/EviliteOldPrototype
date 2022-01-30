@@ -78,6 +78,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0fde3abd220c5ec4ebe9adda1c760400, type: 2}
   tileMaterialToAdd: {fileID: 11400000, guid: 3260681f2691e3f4e864b2d6a110b8fb, type: 2}
   entityTypes:
+  - name: player
+    prefab: {fileID: 4602595231688354047, guid: 68f885620aab19048b30c50f0e3a8ea4, type: 3}
   - name: frog
     prefab: {fileID: 8784651304112093706, guid: f8d96aea0b59fb04fadfb2a80bbc29c2, type: 3}
   tileTypes:
@@ -300,3 +302,7 @@ MonoBehaviour:
       neighbourRadius: 5
       frequency: 0.1
   gameSlotUIPrefab: {fileID: 4212929893878213894, guid: ae516c2b4cb7e7b4ab2cec93bda0c354, type: 3}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
+  globalGravity: 10

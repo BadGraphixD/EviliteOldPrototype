@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.Tilemaps;
-using System;
 
 public class GameManager : MonoBehaviour {
     
@@ -14,22 +13,45 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public enum Level {
-        OVERWORLD = 0,
-        CATACOMBS = 1,
-        TEMPLE = 2
-    }
-
     public Tilemap tilemap;
     public Transform decorationParent;
-
+    public Transform entityParent;
     private SlotData currentSlot;
+
+    void Awake() {
+        GameUIManager.Instance.SetGameUIActive(false);
+        MenuManager.Instance.SetAllMenusActive(true);
+        MenuManager.Instance.MainMenu();
+    }
+
+    public void GoToMainMenu() {
+        SaveSlot();
+        GameUIManager.Instance.SetGameUIActive(false);
+        MenuManager.Instance.SetAllMenusActive(true);
+        MenuManager.Instance.MainMenu();
+
+        tilemap.ClearAllTiles();
+        foreach (Transform decoration in decorationParent) {
+            GameObject.Destroy(decoration.gameObject);
+        }
+        foreach (Transform entity in entityParent) {
+            GameObject.Destroy(entity.gameObject);
+        }
+    }
 
     public void PlaySlot(SlotData slotData) {
         currentSlot = slotData;
-        UnityEngine.Random.seed = slotData.seed; 
+        UnityEngine.Random.InitState(slotData.seed); 
         SlotDataProcessor.DeserializeAndCreateEntities(slotData);
         SlotDataProcessor.DeserializeAndCreateMap(slotData);
+        
+        GameUIManager.Instance.SetGameUIActive(true);
+        MenuManager.Instance.SetAllMenusActive(false);
+
+        Player player = FindObjectOfType<Player>();
+
+        CameraController.Instance.SetTarget(player.transform);
+        PlayerController.Instance.SetPlayer(player);
     }
 
     public void SaveSlot() {

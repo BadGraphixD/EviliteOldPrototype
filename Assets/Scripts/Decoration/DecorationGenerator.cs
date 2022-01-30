@@ -30,7 +30,7 @@ public class DecorationGenerator {
                             
                             if (canGenerate(decorationObject, existingObjects, mapSpacePos, tileIndexMap)) {
 
-                                UnityEngine.Object.Instantiate(Utils.selectRandom(decorationObject.prefabs), worldSpacePos, Quaternion.identity, GameManager.Instance.decorationParent);
+                                UnityEngine.Object.Instantiate(Utils.SelectRandom(decorationObject.prefabs), worldSpacePos, Quaternion.identity, GameManager.Instance.decorationParent);
                                 existingObjects.Add(new ExistingObject(mapSpacePos));
                             }
                         }
@@ -66,7 +66,7 @@ public class DecorationGenerator {
     }
 
     private static bool hasFoundation(Range foundationRange, Vector2 pos, TileIndexMap tileIndexMap, DecorationObject decorationObject) {
-        for (int f = Utils.floor(foundationRange.min - 0.125f); f <= Utils.floor(foundationRange.max); f++) {
+        for (int f = Utils.FloorToInt(foundationRange.min - 0.125f); f <= Utils.FloorToInt(foundationRange.max); f++) {
             if (!tileIndexMap.CompareTileMaterial(new Vector2(f, pos.y - 1f), decorationObject.material)) {
                 return false;
             }
@@ -75,8 +75,8 @@ public class DecorationGenerator {
     }
 
     private static bool hasAirSpace(Range foundationRange, Range airRange, TileIndexMap tileIndexMap) {
-        for (int f = Utils.floor(foundationRange.min); f <= Utils.floor(foundationRange.max - 0.125f); f++) {
-            for (int a = Utils.floor(airRange.min); a <= Utils.floor(airRange.max); a++) {
+        for (int f = Utils.FloorToInt(foundationRange.min); f <= Utils.FloorToInt(foundationRange.max - 0.125f); f++) {
+            for (int a = Utils.FloorToInt(airRange.min); a <= Utils.FloorToInt(airRange.max); a++) {
                 if (!tileIndexMap.TileIsEmptyOrDestructible(new Vector2(f, a))) {
                     return false;
                 }

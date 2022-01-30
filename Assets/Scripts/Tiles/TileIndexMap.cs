@@ -7,8 +7,8 @@ public class TileIndexMap {
     private int minx, maxx, miny, maxy;
     private int[] tileIndices;
 
-    public int Width { get; private set; }
-    public int Height { get; private set; }
+    public int Width { get { return (maxx - minx) + 1; } }
+    public int Height { get { return (maxy - miny) + 1; } }
 
     public int TileAmount {
         get { return tileIndices.Length; }
@@ -25,9 +25,6 @@ public class TileIndexMap {
         miny = int.Parse(SerializationUtils.GetEntryValue(unpackedMapData, "miny"));
         maxx = int.Parse(SerializationUtils.GetEntryValue(unpackedMapData, "maxx"));
         maxy = int.Parse(SerializationUtils.GetEntryValue(unpackedMapData, "maxy"));
-        
-        Width  = (maxx - minx) + 1;
-        Height = (maxy - miny) + 1;
 
         String[] tileIndicesAsStr = SerializationUtils.UnpackEntryData(SerializationUtils.GetEntryValue(unpackedMapData, "tiles"));
         tileIndices = new int[tileIndicesAsStr.Length];
@@ -61,7 +58,7 @@ public class TileIndexMap {
             GameManager.Instance.tilemap.SetTile(new Vector3Int(minx + tilePosX, miny + tilePosY, 0), tileBase);
         }
     }
-    
+
     public bool TileIsEmptyOrDestructible(Vector2 pos) {
         int tileIdx = getTileIdx(pos);
         return tileIdx == -1 || AssetManager.Instance.tileTypes[tileIdx].material.isDestructible;
@@ -71,9 +68,9 @@ public class TileIndexMap {
         int tileIdx = getTileIdx(pos);
         return tileIdx != -1 && AssetManager.Instance.tileTypes[tileIdx].material == material;
     }
-    
+
     private int getTileIdx(Vector2 posf) {
-        Vector2Int pos = new Vector2Int(Utils.floor(posf.x), Utils.floor(posf.y));
+        Vector2Int pos = new Vector2Int(Utils.FloorToInt(posf.x), Utils.FloorToInt(posf.y));
 
         if (pos.x < 0 || pos.x >= Width || pos.y < 0 || pos.y >= Height) {
             return -1;

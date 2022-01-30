@@ -6,8 +6,9 @@ The project was started about a year ago, but got to a halt. Now I've renamed it
 ### Changes from old Project
 + New name
 + Better save/load system
-+ Better structure
-+ Maybe modding support
++ Better code structure
++ More focus on NPSc
++ Aimed to have modding support
 
 ### Project Info
 + Unity, C#

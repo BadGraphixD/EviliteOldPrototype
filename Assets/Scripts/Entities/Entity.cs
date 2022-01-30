@@ -14,4 +14,6 @@ public class Entity : MonoBehaviour {
     public virtual String Serialize() { return null; }
     public virtual void Deserialize(String data) { }
 
+    protected void Get<T>(out T component) { component = GetComponent<T>(); }
+
 }

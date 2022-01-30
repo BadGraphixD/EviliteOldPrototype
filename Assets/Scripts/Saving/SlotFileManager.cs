@@ -32,27 +32,11 @@ public class SlotFileManager {
         return saveSlots.ToArray();
     }
 
-    public static SlotData LoadNewLevelSlotData(GameManager.Level level, String name, float progress) {
-        String path = Application.dataPath + "/Resources/Levels/";
-
-        switch (level) {
-        case GameManager.Level.OVERWORLD:
-            path += "overworld";
-            break;
-        case GameManager.Level.CATACOMBS:
-            path += "catacombs";
-            break;
-        case GameManager.Level.TEMPLE:
-            path += "temple";
-            break;
-        }
-
-        path += fileType;
-
+    public static SlotData LoadNewLevelSlotData(String name, float progress) {
+        String path = Application.dataPath + "/Resources/Levels/template" + fileType;
         SlotData slotData = SlotData.Deserialize(loadData(path));
         slotData.filePath = createValidFilePath(name);
         slotData.name = name;
-        slotData.progress = progress;
 
         return slotData;
     }

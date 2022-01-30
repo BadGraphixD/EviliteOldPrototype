@@ -13,14 +13,14 @@ public class EntityManager : MonoBehaviour {
         }
     }
 
-    public Entity CreateEntity(EntityType type, String data) {
-        Entity entity = Instantiate(type.prefab).GetComponent<Entity>();
+    public Entity CreateEntity(EntityType type, Guid guid, String data) {
+        Entity entity = Instantiate(type.prefab, Vector3.zero, Quaternion.identity, GameManager.Instance.entityParent).GetComponent<Entity>();
 
         if (entity == null) {
             return null;
         }
 
-        entity.guid = Guid.NewGuid();
+        entity.guid = guid;
         entity.type = type;
         entity.Deserialize(data);
         return entity;
