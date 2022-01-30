@@ -7,7 +7,7 @@ The project was started about a year ago, but got to a halt. Now I've renamed it
 + New name
 + Better save/load system
 + Better code structure
-+ More focus on NPSc
++ More focus on NPCs
 + Aimed to have modding support
 
 ### Project Info
